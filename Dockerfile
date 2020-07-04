@@ -1,11 +1,13 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
-RUN apt-get update && apt-get install python3-fontforge unzip
+RUN apt-get update && apt-get install -y curl python3-fontforge
 
-RUN curl -fsSLO https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.xz
-&& tar xf Hack-v3.003-ttf.tar.xz
-RUN curl -fsSLO https://osdn.net/projects/mplus-fonts/downloads/62344/mplus-TESTFLIGHT-063a.tar.xz
-&& tar xf mplus-TESTFLIGHT-063a.tar.xz
-&& mv mplus-TESTFLIGHT-063a/mplus-1m-regular.ttf .
+RUN curl -fsSLO https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.xz && \
+    tar xf Hack-v3.003-ttf.tar.xz
+RUN curl -fsSLO https://osdn.net/projects/mplus-fonts/downloads/62344/mplus-TESTFLIGHT-063a.tar.xz && \
+    tar xf mplus-TESTFLIGHT-063a.tar.xz && \
+    mv mplus-TESTFLIGHT-063a/mplus-1m-regular.ttf .
+COPY LICENSE LICENSE
+COPY build.py build.py
 
-CMD python3 build.py -o output hm-regular.ttf
+CMD python3 build.py -o output/hm-regular.ttf
