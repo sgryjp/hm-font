@@ -14,8 +14,8 @@ jobs:
       # Build a container in the root of our repository and make it run
       - name: Execute build
         uses: ./
-        with:
-          foo: ${{ github.workspace }}
+        env:
+          FOO: ${{ github.workspace }}
 
       # Upload built results as an artifact
       - name: Upload artifacts
