@@ -1,6 +1,6 @@
 FROM sgryjp/fontforge:focal
 
-RUN mkdir -p /inputs outputs
+RUN mkdir -p /inputs
 RUN curl -fsSL https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.xz | \
     xz -d - | tar xv -C /inputs
 RUN curl -fsSL https://osdn.net/projects/mplus-fonts/downloads/62344/mplus-TESTFLIGHT-063a.tar.xz | \
