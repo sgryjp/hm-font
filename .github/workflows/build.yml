@@ -20,4 +20,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: hm-regular.ttf
-          path: /app/output
+          path: outputs

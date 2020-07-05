@@ -1,6 +1,6 @@
 version: "3"
 services:
-    hmfont:
+    builder:
         build: .
         volumes:
-            - ./output:/app/output
+            - ./outputs:/outputs
