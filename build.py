@@ -90,24 +90,24 @@ if __name__ == "__main__":
 
     locale = "English (US)"
     meta = (
-        __copyright__, # Copyright
-        family_name, # Family
-        subfamily_name, # SubFamily
-        f"{family_name}-{subfamily_name}-{__version__}", # UniqueID
-        hack.fullname, # Fullname
-        version_string, # Version
-        f"{family_name}-{subfamily_name}", # PostScriptName
-        "", # Trademark
-        "", # Manufacturer
-        "", # Designer
-        "", # Descriptor
-        "", # Vendor URL
-        "", # Designer URL
-        license_text, # License
-        "https://github.com/sgryjp/hm-font/blob/master/LICENSE", # License URL
-        None, # N/A
-        family_name, # Preferred Family
-        subfamily_name, # Preferred Styles
+        __copyright__, # 0:Copyright
+        family_name, # 1:Family
+        subfamily_name, # 2:SubFamily
+        f"{family_name}-{subfamily_name}-{__version__}", # 3:UniqueID
+        hack.fullname, # 4:Fullname
+        version_string, # 5:Version
+        f"{family_name}-{subfamily_name}", # 6:PostScriptName
+        "", # 7:Trademark
+        "", # 8:Manufacturer
+        "", # 9:Designer
+        "", # 10:Descriptor
+        "", # 11:Vendor URL
+        "", # 12:Designer URL
+        license_text, # 13:License
+        "https://github.com/sgryjp/hm-font/blob/master/LICENSE", # 14:License URL
+        None, # 15:N/A
+        family_name, # 16:Preferred Family
+        subfamily_name, # 17:Preferred Styles
     )
     for i, value in enumerate(meta):
         if value is not None:
