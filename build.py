@@ -5,7 +5,7 @@ from typing import Tuple
 import fontforge
 import psMat
 
-__version__ = "20.7.4"
+__version__ = "20.7.5"
 __copyright__ = "Copyright (c) 2020, Suguru Yamamoto"
 _logger = logging.getLogger(__name__)
 

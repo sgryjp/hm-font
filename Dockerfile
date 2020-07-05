@@ -1,6 +1,4 @@
-FROM ubuntu:20.04
-
-RUN apt-get update && apt-get install -y curl python3-fontforge
+FROM sgryjp/fontforge:focal
 
 RUN curl -fsSLO https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.xz && \
     tar xf Hack-v3.003-ttf.tar.xz
