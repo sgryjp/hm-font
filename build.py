@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 
 
 if __name__ == "__main__":
+    import os
     import sys
     from argparse import ArgumentParser
 
@@ -120,4 +121,5 @@ if __name__ == "__main__":
         _logger.debug("%s", v)
 
     # フォントを出力
+    os.makedirs(args.output, exist_ok=True)
     hack.generate(str(args.output / "hm-regular.ttf"))
