@@ -2,7 +2,7 @@ FROM sgryjp/fontforge:focal
 
 ENV FOO=/foo
 ENV INPUT_FOO=/input_foo
-RUN echo "${FOO}" "${INPUT_FOO}"
+RUN echo "${FOO}" "${INPUT_FOO}" "${GITHUB_WORKSPACE}"
 
 RUN mkdir /app /app/output
 WORKDIR /app
