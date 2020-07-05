@@ -106,8 +106,8 @@ if __name__ == "__main__":
         license_text, # License
         "https://github.com/sgryjp/hm-font/blob/master/LICENSE", # License URL
         None, # N/A
-        "", # Preferred Family
-        "", # Preferred Styles
+        family_name, # Preferred Family
+        subfamily_name, # Preferred Styles
     )
     for i, value in enumerate(meta):
         if value is not None:
