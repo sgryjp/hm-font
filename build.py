@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 
 
 if __name__ == "__main__":
+    import os
     import sys
     from argparse import ArgumentParser
 
@@ -66,7 +67,7 @@ if __name__ == "__main__":
             _logger.warning("Error on copying %s (%s): %s",
                             mplus[code_point], f"u{code_point:x}", e)
 
-    # フォントのメタ情報を設定
+    # フォントのメタ情報を生成
     try:
         hack_version = hack.sfnt_names[5][2].split(";")[0].lower()
     except Exception as e:
@@ -82,12 +83,13 @@ if __name__ == "__main__":
     version_string = ("Version {}; derivative of Hack {} and M+1m {}"
                       .format(__version__, hack_version, mplus_version))
     license_text = Path("LICENSE").read_text()
+
+    # フォントに設定
     family_name = "HM"
     subfamily_name = "Regular"
     hack.fontname = f"{family_name}-{subfamily_name}"
     hack.familyname = family_name
     hack.fullname = f"{family_name} {subfamily_name}"
-
     locale = "English (US)"
     meta = (
         __copyright__, # 0:Copyright
@@ -112,7 +114,12 @@ if __name__ == "__main__":
     for i, value in enumerate(meta):
         if value is not None:
             hack.appendSFNTName(locale, i, value)
+
+    # デバッグ用に設定したメタ情報を表示
     for _, k, v in hack.sfnt_names:
-        _logger.info("[%s]", k)
-        _logger.info("%s", v)
+        _logger.debug("[%s]", k)
+        _logger.debug("%s", v)
+
+    # フォントを出力
+    os.makedirs(args.output, exist_ok=True)
     hack.generate(str(args.output / "hm-regular.ttf"))
