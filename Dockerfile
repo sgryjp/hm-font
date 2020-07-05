@@ -1,5 +1,9 @@
 FROM sgryjp/fontforge:focal
 
+ENV FOO=/foo
+ENV INPUT_FOO=/input_foo
+RUN echo "${FOO}" "${INPUT_FOO}"
+
 RUN mkdir /app /app/output
 WORKDIR /app
 
