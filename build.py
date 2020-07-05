@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 
 
 if __name__ == "__main__":
+    import sys
     from argparse import ArgumentParser
 
     parser = ArgumentParser()
@@ -66,8 +67,20 @@ if __name__ == "__main__":
                             mplus[code_point], f"u{code_point:x}", e)
 
     # フォントのメタ情報を設定
-    hack_version = hack.sfnt_names[5][2]
-    mplus_version = mplus.sfnt_names[5][2]
+    try:
+        hack_version = hack.sfnt_names[5][2].split(";")[0].lower()
+    except Exception as e:
+        _logger.error("Failed to extrace Hack version: %s\n\n%s",
+                      e, hack.sfnt_names)
+        sys.exit(2)
+    try:
+        mplus_version = mplus.sfnt_names[5][2].lower()
+    except Exception as e:
+        _logger.error("Failed to extrace M+ version: %s\n\n%s",
+                      e, mplus.sfnt_names)
+        sys.exit(2)
+    version_string = ("Version {}; derivative of Hack {} and M+1m {}"
+                      .format(__version__, hack_version, mplus_version))
     license_text = Path("LICENSE").read_text()
     family_name = "HM"
     subfamily_name = "Regular"
@@ -82,7 +95,7 @@ if __name__ == "__main__":
         subfamily_name, # SubFamily
         f"{family_name}-{subfamily_name}-{__version__}", # UniqueID
         hack.fullname, # Fullname
-        f"Version {__version__}; derivative of Hack {hack_version} and M+ 1m {mplus_version}", # Version
+        version_string, # Version
         f"{family_name}-{subfamily_name}", # PostScriptName
         "", # Trademark
         "", # Manufacturer
