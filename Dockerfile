@@ -11,4 +11,4 @@ RUN curl -fsSLO https://osdn.net/projects/mplus-fonts/downloads/62344/mplus-TEST
 COPY LICENSE .
 COPY build.py .
 
-CMD python3 /app/build.py -o /app/output/hm-regular.ttf
+CMD python3 /app/build.py -i /app -o /app/output

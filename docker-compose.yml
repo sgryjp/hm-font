@@ -3,4 +3,4 @@ services:
     hmfont:
         build: .
         volumes:
-            - ./output:/output
+            - ./output:/app/output

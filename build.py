@@ -14,7 +14,9 @@ if __name__ == "__main__":
     from argparse import ArgumentParser
 
     parser = ArgumentParser()
-    parser.add_argument("-o", "--output", required=True,
+    parser.add_argument("-i", "--input", required=True, type=Path,
+                        help="path to read source font file")
+    parser.add_argument("-o", "--output", required=True, type=Path,
                         help="path to write the composed font file")
     args = parser.parse_args()
 
@@ -23,8 +25,8 @@ if __name__ == "__main__":
                         level=logging.DEBUG)
 
     # フォントをロード
-    hack = fontforge.open(f"Hack-Regular.ttf")
-    mplus = fontforge.open(f"mplus-1m-regular.ttf")
+    hack = fontforge.open(str(args.input / "Hack-Regular.ttf"))
+    mplus = fontforge.open(str(args.input / "mplus-1m-regular.ttf"))
 
     # フォントのサイズ調整用に「M」の字でサイズ比と差を計算。
     # ただし Hack と M+1M は文字の縦横比が違うため、単純な拡縮ではマッチしない。
@@ -100,4 +102,4 @@ if __name__ == "__main__":
     for _, k, v in hack.sfnt_names:
         _logger.info("[%s]", k)
         _logger.info("%s", v)
-    hack.generate(args.output)
+    hack.generate(str(args.output / "hm-regular.ttf"))
