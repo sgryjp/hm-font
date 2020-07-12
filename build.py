@@ -9,6 +9,18 @@ __copyright__ = "Copyright (c) 2020, Suguru Yamamoto"
 _logger = logging.getLogger(__name__)
 
 
+def bits_repr(*args) -> str:
+    tokens = []
+    for arg in args:
+        if 0 <= arg:
+            token = "{:032b}".format(arg)
+        else:
+            token = "{:032b}".format(0x1_0000_0000 + arg)
+        tokens += [
+            token[i * 8:(i * 8) + 8] for i in range(4)]
+    return " ".join(tokens)
+
+
 if __name__ == "__main__":
     import os
     import sys
@@ -65,6 +77,67 @@ if __name__ == "__main__":
         except Exception as e:
             _logger.warning("Error on copying %s (%s): %s",
                             mplus[code_point], f"u{code_point:x}", e)
+
+    # オリジナルから合成して引き継ぐべきメタデータを準備
+    # 字体のデザイン特性はコンセプト上の主体である Hack のそれを踏襲する。
+    # サポートする文字集合は、両フォントのそれの和集合とする。
+    _logger.info("[os2_version]")
+    _logger.info("hack:  %s", hack.os2_version)
+    _logger.info("mplus: %s", mplus.os2_version)
+    hack.os2_version = 1  # OS/2 table version number
+    _logger.info("hm:    %s", hack.os2_version)
+    _logger.info("[os2_weight]")
+    _logger.info("hack:  %s", hack.os2_weight)
+    _logger.info("mplus: %s", mplus.os2_weight)
+    hack.os2_weight = 400  # Regular
+    _logger.info("hm:    %s", hack.os2_weight)
+    _logger.info("[os2_width]")
+    _logger.info("hack:  %s", hack.os2_width)
+    _logger.info("mplus: %s", mplus.os2_width)
+    hack.os2_width = 5  # Medium (normal)
+    _logger.info("hm:    %s", hack.os2_width)
+    _logger.info("[os2_fstype]")
+    _logger.info("hack:  %s", hack.os2_fstype)
+    _logger.info("mplus: %s", mplus.os2_fstype)
+    hack.os2_fstype = 0  # Installable Embedding
+    _logger.info("hm:    %s", hack.os2_fstype)
+    _logger.info("[os2_vendor]")
+    _logger.info("hack:  %s", hack.os2_vendor)
+    _logger.info("mplus: %s", mplus.os2_vendor)
+    hack.os2_vendor = ""
+    _logger.info("hm:    %s", hack.os2_vendor)
+    # https://monotype.github.io/panose/pan2.htm
+    _logger.info("[os2_panose]")
+    _logger.info("hack:  %s", hack.os2_panose)
+    _logger.info("mplus: %s", mplus.os2_panose)
+    hack.os2_panose = (
+        2,  # (Faimly Kind) Latin Text
+        11,  # (Serif Style Classification) Normal Sans
+        6,  # (Weight) Medium
+        9,  # (Propotion) Monospaced
+        3,  # (Contrast) Very Low
+        2,  # (Stroke Variation) No Variation
+        2,  # (Arm Style) Straight Arms/Horizontal
+        2,  # (Letterform) Normal/Contact
+        2,  # (Midline) Standard/Trimmed
+        4,  # (X-height) Constant/Large
+    )
+    _logger.info("hm:    %s", hack.os2_panose)
+    # https://docs.microsoft.com/en-us/typography/opentype/otspec140/os2ver1#ur
+    _logger.info("[os2_unicoderanges]")
+    _logger.info("hack:  %s", bits_repr(*hack.os2_unicoderanges))
+    _logger.info("mplus: %s", bits_repr(*mplus.os2_unicoderanges))
+    hack.os2_unicoderanges = tuple(
+        h | m for h, m in zip(hack.os2_unicoderanges, mplus.os2_unicoderanges)
+    )
+    _logger.info("hm:    %s", bits_repr(*hack.os2_unicoderanges))
+    _logger.info("[os2_os2_codepages]")
+    _logger.info("hack:  %s", bits_repr(*hack.os2_codepages))
+    _logger.info("mplus: %s", bits_repr(*mplus.os2_codepages))
+    hack.os2_codepages = tuple(
+        h | m for h, m in zip(hack.os2_codepages, mplus.os2_codepages)
+    )
+    _logger.info("hm:    %s", bits_repr(*hack.os2_codepages))
 
     # フォントのメタ情報を生成
     try:
