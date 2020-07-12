@@ -1,8 +1,11 @@
+.vscode/
 Hack-*/
+__pycache__/
+inputs/
 mplus-*/
+outputs/
 venv/
 Hack-*.ttf
 Hack-*.tar.xz
 mplus-*.ttf
 mplus-*.tar.xz
-outputs/
