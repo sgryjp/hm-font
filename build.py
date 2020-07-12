@@ -1,8 +1,7 @@
 import logging
 from pathlib import Path
-from typing import Tuple
 
-import fontforge
+import fontforge as ff
 import psMat
 
 __version__ = "20.7.5"
@@ -27,8 +26,8 @@ if __name__ == "__main__":
                         level=logging.DEBUG)
 
     # フォントをロード
-    hack = fontforge.open(str(args.input / "Hack-Regular.ttf"))
-    mplus = fontforge.open(str(args.input / "mplus-1m-regular.ttf"))
+    hack: ff.font = ff.open(str(args.input / "Hack-Regular.ttf"))
+    mplus: ff.font = ff.open(str(args.input / "mplus-1m-regular.ttf"))
 
     # フォントのサイズ調整用に「M」の字でサイズ比と差を計算。
     # ただし Hack と M+1M は文字の縦横比が違うため、単純な拡縮ではマッチしない。
@@ -91,25 +90,26 @@ if __name__ == "__main__":
     hack.familyname = family_name
     hack.fullname = f"{family_name} {subfamily_name}"
     locale = "English (US)"
+    license_url = "https://github.com/sgryjp/hm-font/blob/master/LICENSE"
     meta = (
-        __copyright__, # 0:Copyright
-        family_name, # 1:Family
-        subfamily_name, # 2:SubFamily
-        f"{family_name}-{subfamily_name}-{__version__}", # 3:UniqueID
-        hack.fullname, # 4:Fullname
-        version_string, # 5:Version
-        f"{family_name}-{subfamily_name}", # 6:PostScriptName
-        "", # 7:Trademark
-        "", # 8:Manufacturer
-        "", # 9:Designer
-        "", # 10:Descriptor
-        "", # 11:Vendor URL
-        "", # 12:Designer URL
-        license_text, # 13:License
-        "https://github.com/sgryjp/hm-font/blob/master/LICENSE", # 14:License URL
-        None, # 15:N/A
-        family_name, # 16:Preferred Family
-        subfamily_name, # 17:Preferred Styles
+        __copyright__,  # 0:Copyright
+        family_name,  # 1:Family
+        subfamily_name,  # 2:SubFamily
+        f"{family_name}-{subfamily_name}-{__version__}",  # 3:UniqueID
+        hack.fullname,  # 4:Fullname
+        version_string,  # 5:Version
+        f"{family_name}-{subfamily_name}",  # 6:PostScriptName
+        "",  # 7:Trademark
+        "",  # 8:Manufacturer
+        "",  # 9:Designer
+        "",  # 10:Descriptor
+        "",  # 11:Vendor URL
+        "",  # 12:Designer URL
+        license_text,  # 13:License
+        license_url,  # 14:License URL
+        None,  # 15:N/A
+        family_name,  # 16:Preferred Family
+        subfamily_name,  # 17:Preferred Styles
     )
     for i, value in enumerate(meta):
         if value is not None:
@@ -117,8 +117,9 @@ if __name__ == "__main__":
 
     # デバッグ用に設定したメタ情報を表示
     for _, k, v in hack.sfnt_names:
-        _logger.debug("[%s]", k)
-        _logger.debug("%s", v)
+        if k != "License":
+            _logger.debug("[%s]", k)
+            _logger.debug("%s", v)
 
     # フォントを出力
     os.makedirs(args.output, exist_ok=True)
