@@ -19,5 +19,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: hm-regular.ttf
+          name: hm-font.zip
           path: outputs

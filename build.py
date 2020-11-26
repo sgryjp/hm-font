@@ -21,10 +21,12 @@ def bits_repr(*args) -> str:
     return " ".join(tokens)
 
 
-def build(fontdir: Path, outdir: Path):
+def build(fontdir: Path, outdir: Path, bold=False):
     # フォントをロード
-    hack: ff.font = ff.open(str(fontdir / "Hack-Regular.ttf"))
-    mplus: ff.font = ff.open(str(fontdir / "mplus-1m-regular.ttf"))
+    hack_path = fontdir / f"Hack-{'Bold' if bold else 'Regular'}.ttf"
+    mplus_path = fontdir / f"mplus-1m-{'bold' if bold else 'regular'}.ttf"
+    hack: ff.font = ff.open(str(hack_path))
+    mplus: ff.font = ff.open(str(mplus_path))
 
     # フォントのサイズ調整用に「M」の字でサイズ比と差を計算。
     # ただし Hack と M+1M は文字の縦横比が違うため、単純な拡縮ではマッチしない。
@@ -143,7 +145,7 @@ def build(fontdir: Path, outdir: Path):
 
     # フォントに設定
     family_name = "HM"
-    subfamily_name = "Regular"
+    subfamily_name = "Bold" if bold else "Regular"
     hack.fontname = f"{family_name}-{subfamily_name}"
     hack.familyname = family_name
     hack.fullname = f"{family_name} {subfamily_name}"
@@ -181,7 +183,7 @@ def build(fontdir: Path, outdir: Path):
 
     # フォントを出力
     os.makedirs(outdir, exist_ok=True)
-    hack.generate(str(outdir / "hm-regular.ttf"))
+    hack.generate(str(outdir / f"hm-{'bold' if bold else 'regular'}.ttf"))
 
 
 if __name__ == "__main__":
@@ -201,4 +203,5 @@ if __name__ == "__main__":
                         level=logging.DEBUG)
 
     # フォントを生成
-    build(Path(args.input), Path(args.output))
+    build(Path(args.input), Path(args.output), False)
+    build(Path(args.input), Path(args.output), True)
