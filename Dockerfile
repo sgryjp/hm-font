@@ -1,4 +1,7 @@
-FROM sgryjp/fontforge:focal
+FROM ubuntu:focal
+
+RUN apt-get update && \
+    apt-get install -y curl python3-fontforge
 
 RUN mkdir -p /inputs
 RUN curl -fsSL https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.xz | \
