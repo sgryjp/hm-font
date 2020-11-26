@@ -21,25 +21,10 @@ def bits_repr(*args) -> str:
     return " ".join(tokens)
 
 
-if __name__ == "__main__":
-    import os
-    import sys
-    from argparse import ArgumentParser
-
-    parser = ArgumentParser()
-    parser.add_argument("-i", "--input", required=True, type=Path,
-                        help="path to read source font file")
-    parser.add_argument("-o", "--output", required=True, type=Path,
-                        help="path to write the composed font file")
-    args = parser.parse_args()
-
-    # ロガーを設定
-    logging.basicConfig(format="[%(asctime)s] %(message)s",
-                        level=logging.DEBUG)
-
+def build(fontdir: Path, outdir: Path):
     # フォントをロード
-    hack: ff.font = ff.open(str(args.input / "Hack-Regular.ttf"))
-    mplus: ff.font = ff.open(str(args.input / "mplus-1m-regular.ttf"))
+    hack: ff.font = ff.open(str(fontdir / "Hack-Regular.ttf"))
+    mplus: ff.font = ff.open(str(fontdir / "mplus-1m-regular.ttf"))
 
     # フォントのサイズ調整用に「M」の字でサイズ比と差を計算。
     # ただし Hack と M+1M は文字の縦横比が違うため、単純な拡縮ではマッチしない。
@@ -195,5 +180,25 @@ if __name__ == "__main__":
             _logger.debug("%s", v)
 
     # フォントを出力
-    os.makedirs(args.output, exist_ok=True)
-    hack.generate(str(args.output / "hm-regular.ttf"))
+    os.makedirs(outdir, exist_ok=True)
+    hack.generate(str(outdir / "hm-regular.ttf"))
+
+
+if __name__ == "__main__":
+    import os
+    import sys
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser()
+    parser.add_argument("-i", "--input", required=True, type=Path,
+                        help="path to read source font file")
+    parser.add_argument("-o", "--output", required=True, type=Path,
+                        help="path to write the composed font file")
+    args = parser.parse_args()
+
+    # ロガーを設定
+    logging.basicConfig(format="[%(asctime)s] %(message)s",
+                        level=logging.DEBUG)
+
+    # フォントを生成
+    build(Path(args.input), Path(args.output))
