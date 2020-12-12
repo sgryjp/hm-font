@@ -4,7 +4,7 @@ from pathlib import Path
 import fontforge as ff
 import psMat
 
-__version__ = "20.7.12"
+__version__ = "20.12.12"
 __copyright__ = "Copyright (c) 2020, Suguru Yamamoto"
 _logger = logging.getLogger(__name__)
 
